@@ -38,7 +38,6 @@ describe('user routes', () => {
   it('creates a new user', async () => {
     const res = await request(app).post('/api/v1/users').send(mockUser);
     const { firstName, lastName, email } = mockUser;
-    console.log('res.body', res.body);
     expect(res.body).toEqual({
       id: expect.any(String),
       firstName,
@@ -56,6 +55,7 @@ describe('user routes', () => {
   it('returns the current authenticated user', async () => {
     const [agent, user] = await registerAndLogin();
     const me = await agent.get('/api/v1/users/me');
+    console.log('me.body', me.body);
     expect(me.body).toEqual({
       ...user,
       exp: expect.any(Number),
