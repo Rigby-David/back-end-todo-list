@@ -46,7 +46,14 @@ describe('user routes', () => {
       email,
     });
   });
-  it('returns the current user', async () => {
+  it('#POST to /sessions signs in a new user', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: 'test@example.com', password: '123456' });
+    expect(res.status).toBe(200);
+  });
+  it('returns the current authenticated user', async () => {
     const [agent, user] = await registerAndLogin();
     const me = await agent.get('/api/v1/users/me');
     expect(me.body).toEqual({
