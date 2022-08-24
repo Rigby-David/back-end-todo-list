@@ -49,11 +49,14 @@ describe('user routes', () => {
   });
   it('#GET /api/v1/todos shows a list of all todos for the auth user', async () => {
     const [agent, user] = await registerAndLogin();
-    const todo = { description: 'sweep' };
+    const todo = { description: 'mow' };
     const res = await agent.post('/api/v1/todos').send(todo);
+    console.log('res.body', res.body);
     expect(res.status).toBe(200);
 
     const resp = await agent.get('/api/v1/todos');
+    console.log('resp.body', resp.body);
+    console.log('resp.body.length', resp.body.length);
     expect(resp.body.length).toBe(1);
     expect(resp.body[0]).toEqual({
       id: expect.any(String),
