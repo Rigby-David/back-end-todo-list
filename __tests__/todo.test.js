@@ -65,4 +65,19 @@ describe('user routes', () => {
       complete: false,
     });
   });
+  it('#PUT /api/v1/todos/:id allows an auth user to complete a todo', async () => {
+    const [agent, user] = await registerAndLogin();
+    const todo = { description: 'mow' };
+    const res = await agent.post('/api/v1/todos').send(todo);
+    expect(res.status).toBe(200);
+
+    const resp = await agent.put('/api/v1/todos/1').send({ complete: true });
+    expect(resp.status).toBe(200);
+    expect(resp.body).toEqual({
+      id: expect.any(String),
+      description: 'mow',
+      user_id: user.id,
+      complete: true,
+    });
+  });
 });
