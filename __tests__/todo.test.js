@@ -35,14 +35,14 @@ describe('user routes', () => {
     pool.end();
   });
 
-  it('#POST /api/v1/tasks creates a new task', async () => {
+  it('#POST /api/v1/todos creates a new todo', async () => {
     const [agent, user] = await registerAndLogin();
-    const task = { description: 'vacuum' };
-    const res = await agent.post('/api/v1/tasks').send(task);
+    const todo = { description: 'laundry' };
+    const res = await agent.post('/api/v1/todos').send(todo);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: expect.any(String),
-      description: task.description,
+      description: todo.description,
       user_id: user.id,
       complete: false,
     });
