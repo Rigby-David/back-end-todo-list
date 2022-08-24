@@ -47,4 +47,19 @@ describe('user routes', () => {
       complete: false,
     });
   });
+  it('#GET /api/v1/todos shows a list of all todos for the auth user', async () => {
+    const [agent, user] = await registerAndLogin();
+    const todo = { description: 'sweep' };
+    const res = await agent.post('/api/v1/todos').send(todo);
+    expect(res.status).toBe(200);
+
+    const resp = await agent.get('/api/v1/todos');
+    expect(resp.body.length).toBe(1);
+    expect(resp.body[0]).toEqual({
+      id: expect.any(String),
+      description: 'mow',
+      user_id: user.id,
+      complete: false,
+    });
+  });
 });
