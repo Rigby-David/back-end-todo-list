@@ -55,7 +55,6 @@ describe('user routes', () => {
   it('returns the current authenticated user', async () => {
     const [agent, user] = await registerAndLogin();
     const me = await agent.get('/api/v1/users/me');
-    console.log('me.body', me.body);
     expect(me.body).toEqual({
       ...user,
       exp: expect.any(Number),
