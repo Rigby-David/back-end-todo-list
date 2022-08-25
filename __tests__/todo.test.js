@@ -80,4 +80,12 @@ describe('user routes', () => {
       complete: true,
     });
   });
+  it('#DELETE /api/v1/todos/:id user can delete a task', async () => {
+    const todo = { description: 'mow' };
+    const agent = request.agent(app);
+    await agent.post('api/v1/users').send(mockUser);
+
+    const response = await agent.post('/api/v1/todos').send(todo);
+    expect(response.status).toBe(200);
+  });
 });
