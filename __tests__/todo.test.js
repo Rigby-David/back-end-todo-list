@@ -51,12 +51,9 @@ describe('user routes', () => {
     const [agent, user] = await registerAndLogin();
     const todo = { description: 'mow' };
     const res = await agent.post('/api/v1/todos').send(todo);
-    console.log('res.body', res.body);
     expect(res.status).toBe(200);
 
     const resp = await agent.get('/api/v1/todos');
-    console.log('resp.body', resp.body);
-    console.log('resp.body.length', resp.body.length);
     expect(resp.body.length).toBe(1);
     expect(resp.body[0]).toEqual({
       id: expect.any(String),
@@ -80,12 +77,18 @@ describe('user routes', () => {
       complete: true,
     });
   });
-  it('#DELETE /api/v1/todos/:id user can delete a task', async () => {
+  it('#DELETE /api/v1/todos/:id user can delete a todo', async () => {
     const todo = { description: 'mow' };
     const agent = request.agent(app);
-    await agent.post('api/v1/users').send(mockUser);
+    await agent.post('/api/v1/users').send(mockUser);
 
     const response = await agent.post('/api/v1/todos').send(todo);
     expect(response.status).toBe(200);
+
+    const res = await agent.delete('/api/v1/todos/1');
+    expect(res.status).toBe(200);
+
+    const resp = await agent.get('/api/v1/todos/1');
+    expect(resp.status).toBe(404);
   });
 });
